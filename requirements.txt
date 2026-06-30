@@ -1,0 +1,32 @@
+# ---- Core (lite mode, runs anywhere incl. CPU sandbox) ----
+numpy>=1.24
+rank-bm25>=0.2.2
+scikit-learn>=1.3
+rapidfuzz>=3.0
+PyYAML>=6.0
+
+# ---- Vietnamese tokenisation (recommended) ----
+pyvi>=0.1.1
+
+# ---- Corpus building ----
+# Crawl vbpl.vn directly:
+#   requests>=2.31  beautifulsoup4>=4.12  lxml>=5.0
+# Build from a ready HuggingFace dataset (scripts/from_hf.py):
+#   datasets>=2.18
+# Import doanhieung/th1nhng0 parquet (import_*.py) + consolidate to parquet:
+#   huggingface_hub>=0.23  pyarrow>=15  duckdb>=0.10
+# Progress bars (generate_dev_set / eval_full / tune_f2):
+#   tqdm>=4.66
+
+# ---- Production retrieval/generation (GPU machine) ----
+# Uncomment / install on your training box. All compliant: open-source, <14B,
+# released before 2026-03-01.
+# torch>=2.1
+# sentence-transformers>=3.0      # BGE-M3 embedding + CrossEncoder reranker
+# FlagEmbedding>=1.2              # optional: native BGE-M3 (dense+sparse+colbert)
+# transformers>=4.44             # for llm_backend: hf  (Qwen2.5-7B-Instruct)
+# accelerate>=0.30
+
+# Generator serving (choose one):
+#   - Ollama:  install separately, then `ollama pull qwen2.5:7b-instruct`
+#   - vLLM:    pip install vllm   (OpenAI-compatible server for fast batch)

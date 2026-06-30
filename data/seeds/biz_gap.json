@@ -1,0 +1,26 @@
+[
+  {
+    "law_id": "61/2020/QH14",
+    "doc_type": "law",
+    "title": "Luật Đầu tư",
+    "keyword": "Luật Đầu tư 61/2020/QH14",
+    "url": "https://vbpl.vn/TW/Pages/vbpq-luocdo.aspx?ItemID=142867",
+    "note": "Luật Đầu tư 2020 - gap bắt buộc. Lấy URL Toàn văn từ trang lược đồ ItemID=142867"
+  },
+  {
+    "law_id": "58/2014/QH13",
+    "doc_type": "law",
+    "title": "Luật Bảo hiểm xã hội",
+    "keyword": "Luật Bảo hiểm xã hội 58/2014/QH13",
+    "url": "https://vbpl.vn/TW/Pages/vbpq-van-ban-goc.aspx?ItemID=46744",
+    "note": "Luật BHXH 2014 - nên có. Trang lược đồ ItemID=46744"
+  },
+  {
+    "law_id": "13/2008/QH12",
+    "doc_type": "law",
+    "title": "Luật Thuế giá trị gia tăng",
+    "keyword": "Luật Thuế giá trị gia tăng 13/2008/QH12",
+    "url": "https://vbpl.vn/botaichinh/Pages/vbpq-luocdo.aspx?ItemID=12806",
+    "note": "Luật Thuế GTGT 2008 - bonus. Trang lược đồ ItemID=12806 (scope botaichinh)"
+  }
+]

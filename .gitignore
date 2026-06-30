@@ -1,0 +1,37 @@
+# ── Build artifacts / outputs ───────────────────────────────
+data/index/
+results.json
+*.zip
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# ── OS / editor junk ────────────────────────────────────────
+.DS_Store
+**/.DS_Store
+~$*
+*~
+
+# ── Large corpora (>100MB → GitHub từ chối; rebuild qua scripts) ─
+data/corpus/
+data/corpus.jsonl
+data/corpus.parquet
+data/cache_html/
+data/legal_articles.jsonl
+data/legal_articles.clean.jsonl
+*.pkl
+
+# ── Generated training / dev artifacts ──────────────────────
+data/train/
+data/test/dev_test.json
+data/test/dev_gold.json
+data/test/dev_pairs.jsonl
+
+# Keep: data/seeds/, data/SOURCES.md, data/EDA_REPORT*.md,
+#       data/test/test.json, data/test/gold.json, config*.yaml,
+#       requirements*.txt, src/, scripts/, notebooks/, SUBMISSION/
+
+# Scratch / intermediate data (raw per-law dumps, crawled HTML, dev caches)
+data/_*/
+data/test/dev_candidates_bm25.json

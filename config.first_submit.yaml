@@ -1,0 +1,43 @@
+# R2AI 2026 — config cho LẦN NỘP ĐẦU TIÊN (chạy trên Mac).
+# Khác config.yaml ở 3 điểm an toàn:
+#   - test_file  -> bộ thi thật 2000 câu (KHÔNG phải data/test/test.json 6 câu mẫu)
+#   - llm_backend: extractive  -> KHÔNG cần Ollama, answer vẫn tự trích "Điều X (mã VB)"
+#   - use_hyde: false          -> HyDE vô nghĩa khi không có LLM; tắt cho sạch & nhanh
+# Index dense.pkl + bm25.pkl ĐÃ build sẵn (stage A) nên chỉ cần inference.
+
+paths:
+  corpus_dir: data/corpus.json
+  test_file: data/test/R2AIStage1DATA.json   # <-- bộ thi thật 2000 câu
+  index_dir: data/index
+  results_file: results.json
+  submission_zip: submission.zip
+
+chunk:
+  split_long: true
+  max_chars: 1200
+
+retrieval:
+  bm25_top_n: 100
+  dense_top_n: 100
+  rrf_weights: [0.3, 0.7]
+  rrf_k: 30
+  rerank_top_n: 60
+  use_reranker: true
+  use_hyde: false             # <-- tắt HyDE cho lần extractive đầu
+  min_k: 1
+  max_k: 8                    # F2 ưu tiên Recall; tune lại bằng stage E sau
+  rel_threshold: 0.3
+
+models:
+  dense_backend: st
+  dense_model: AITeamVN/Vietnamese_Embedding   # PHẢI trùng model đã build dense.pkl
+  dense_max_seq_length: 512
+  dense_batch_size: 16
+  reranker_backend: cross-encoder
+  reranker_model: AITeamVN/Vietnamese_Reranker
+  llm_backend: extractive     # <-- không cần Ollama cho lần nộp đầu
+  llm_model: qwen3:8b
+  llm_base_url: http://localhost:11434
+  llm_temperature: 0.2
+  llm_max_tokens: 1024
+  device: mps                 # Apple Silicon. Intel Mac -> cpu

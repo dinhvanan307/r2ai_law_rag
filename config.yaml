@@ -1,0 +1,52 @@
+# R2AI 2026 pipeline configuration.
+# Paths are relative to the r2ai_pipeline/ root unless absolute.
+
+paths:
+  corpus_dir: data/corpus.json   # consolidated corpus (load_corpus accepts file or dir)
+  test_file: data/test/test.json
+  index_dir: data/index
+  results_file: results.json
+  submission_zip: submission.zip
+
+chunk:
+  split_long: true             # khoản-level sub-chunks for long articles
+  max_chars: 1200
+
+retrieval:
+  bm25_top_n: 100
+  dense_top_n: 100
+  rrf_weights: [0.3, 0.7]      # [bm25, dense]
+  rrf_k: 30                    # RRF constant
+  rerank_top_n: 60             # How many docs to pass to cross-encoder (khớp top_n=60 lúc auto-tune)
+  use_reranker: true
+  use_hyde: true               # Sinh văn bản giả định bằng LLM trước khi truy hồi
+
+  # Final filtering after reranker
+  min_k: 1                     # always return at least 1 article
+  max_k: 8                     # F2 ưu tiên Recall → 3 quá thấp; để 8 rồi tune lại
+  rel_threshold: 0.3           # giữ điều có score >= rel_threshold * top_score
+                               # LƯU Ý: cross-encoder (bge-reranker) có thể cho
+                               # điểm ÂM → ngưỡng tương đối dễ lệch. Tune bằng
+                               # scripts/tune_f2.py trên dev set thật.
+  rel_score_transform: none    # none | sigmoid. sigmoid bọc logit reranker về
+                               # (0,1) trước khi so ngưỡng tương đối → ổn định khi
+                               # score âm. Dò giá trị tốt nhất bằng scripts/tune_f2.py.
+
+models:
+  # Dense embedding: "auto" uses sentence-transformers if installed, else TF-IDF.
+  dense_backend: st         # tfidf = nhanh (vài phút, để ITER/tune ngay);
+                               # đổi 'st' khi build embedding thật trên GPU
+  dense_model: AITeamVN/Vietnamese_Embedding     # or BAAI/bge-m3 (dùng khi backend=st)
+  dense_max_seq_length: 512    # cắt token/chunk; tránh nổ buffer attention (mps)
+  dense_batch_size: 16         # giảm nếu vẫn thiếu bộ nhớ (vd 8)
+  # Reranker: "auto" uses CrossEncoder if installed, else lexical overlap.
+  reranker_backend: cross-encoder       # auto | cross-encoder | lexical
+  reranker_model: AITeamVN/Vietnamese_Reranker  # or BAAI/bge-reranker-v2-m3
+  # Generator (must be open-source, <14B, released before 2026-03-01).
+  llm_backend: ollama      # extractive | ollama | vllm | hf
+  llm_model: qwen3:8b
+  llm_base_url: http://localhost:11434
+  llm_temperature: 0.2
+  llm_max_tokens: 1024
+  device: mps                 # Mac Apple Silicon: "mps" (nhanh hơn cpu nhiều);
+                              # Intel Mac: "cpu"; GPU NVIDIA: "cuda"

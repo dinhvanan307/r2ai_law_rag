@@ -1,0 +1,26 @@
+# ---- GPU runtime cho bản nộp R2AI 2026 (Kaggle 2×T4 / máy NVIDIA) ----
+# Cài SAU requirements.txt. Tất cả open-source, <14B, ra mắt trước 2026-03-01.
+#
+#   python -m pip install -r requirements.txt
+#   python -m pip install -r requirements-gpu.txt
+#
+# torch: trên Kaggle đã có sẵn bản cu12x. Cài tay nếu máy chưa có:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu128
+
+torch>=2.1                       # backend GPU (fp16 trên T4)
+sentence-transformers>=3.0       # SentenceTransformer (dense) + CrossEncoder (reranker)
+transformers>=4.44               # phụ thuộc của sentence-transformers
+accelerate>=0.30                 # multi-GPU / device_map
+huggingface_hub>=0.23            # tải snapshot model (Vietnamese_Embedding/Reranker)
+tqdm>=4.66                       # progress bar khi encode corpus
+
+# ---- (chỉ cần khi BUILD lại corpus từ HuggingFace, KHÔNG cần cho inference) ----
+# datasets>=2.18
+# pyarrow>=15
+# duckdb>=0.10
+# beautifulsoup4>=4.12
+# lxml>=5.0
+# striprtf>=0.0.26               # parse RTF khi vá 2 văn bản trọng yếu
+
+# ---- KHÔNG dùng cho bản nộp (llm_backend=extractive) ----
+# Generator LLM (Ollama/vLLM/transformers) KHÔNG bắt buộc: answer sinh extractive.
